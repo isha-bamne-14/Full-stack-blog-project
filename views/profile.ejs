@@ -1,0 +1,108 @@
+<%- include('partials/header', { title: title, user: user })  %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <!-- Profile Section -->
+    <div class="col-md-10">
+      <div class="card shadow-lg mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <!-- Profile Picture -->
+            <div class="me-4">
+              <% if (user?.profilePicture && user?.profilePicture?.url) { %>
+                <img 
+                  src="<%= user.profilePicture.url %>" 
+                  alt="Profile Picture" 
+                  class="img-fluid rounded-circle border shadow-sm" 
+                  style="width: 120px; height: 120px; object-fit: cover;"
+                >
+              <% } else { %>
+                <img 
+                  src="https://via.placeholder.com/120" 
+                  alt="No Profile Picture" 
+                  class="img-fluid rounded-circle border shadow-sm" 
+                  style="width: 120px; height: 120px; object-fit: cover;"
+                >
+              <% } %>
+            </div>
+            <!-- User Details -->
+            <div class="ml-4">
+              <h2 class="card-title"><%= user.username %></h2>
+              <p class="text-muted mb-1"><i class="fas fa-envelope me-2 mr-2"></i><%= user.email %></p>
+              <p class="text-muted mb-1"><i class="fas fa-calendar-alt me-2 mr-2"></i>Joined on: <%= new Date(user.createdAt).toLocaleDateString() %></p>
+              <p class="text-muted"><i class="fas fa-pencil-alt me-2 mr-2"></i>Number of Posts: <%= user.posts.length %></p>
+              <div class="mt-3 d-flex gap-2">
+                <a href="/user/edit" class="btn btn-sm btn-primary mr-2">
+                  <i class="fas fa-edit me-2 mr-1"></i>Edit Profile
+                </a>
+                <form action="/user/delete?_method=DELETE" method="POST" class="d-inline-block">
+                  <button 
+                    type="submit" 
+                    class="btn btn-sm btn-danger" 
+                    onclick="return confirm('Are you sure you want to delete your profile?')"
+                  >
+                    <i class="fas fa-trash-alt me-2 mr-1"></i>Delete Profile
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Bio Section -->
+        <div class="mt-4">
+            <h4 class="text-muted">About Me</h4>
+            <p class="text-dark">
+              <% if (user.bio && user.bio.trim().length > 0) { %>
+                <%= user.bio %>
+              <% } else { %>
+                <span class="text-muted">No bio added yet.</span>
+              <% } %>
+            </p>
+          </div>
+        </div>
+        </div>
+        
+      </div>
+
+      <!-- Posts Section -->
+      <% if (posts?.length > 0) { %>
+      <div class="card shadow-lg">
+        <div class="card-body">
+          <h3 class="card-title text-center mb-4">Posts</h3>
+          <div class="row">
+            <% posts.forEach(post => { %>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                  <!-- Post Image -->
+                  <% if (post.images && post.images[0]?.url) { %>
+                    <img 
+                      src="<%= post.images[0].url %>" 
+                      alt="Post Image" 
+                      class="card-img-top img-fluid rounded-top" 
+                      style="height: 200px; object-fit: cover;"
+                    >
+                  <% } %>
+                  <div class="card-body">
+                    <h5 class="card-title"><a href="/posts/<%= post._id %>" class="text-decoration-none"><%= post.title %></a></h5>
+                    <p class="card-text text-muted"><%= post.content.substring(0, 100) %>...</p>
+                  </div>
+                  <div class="card-footer text-muted">
+                    <small>Posted on <%= new Date(post.createdAt).toLocaleDateString() %></small>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+      <% } else { %>
+      <div class="card shadow-lg">
+        <div class="card-body text-center">
+          <h5 class="text-muted">No posts to display</h5>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

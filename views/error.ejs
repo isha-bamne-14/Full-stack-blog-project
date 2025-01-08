@@ -1,0 +1,15 @@
+<%- include('partials/header', { title: title, user: user }) %>
+
+<div class="container-fluid mt-5" style="max-width: 90%;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-danger text-center" role="alert">
+                <h1 class="display-4">Oops! Something went wrong</h1>
+                <p class="lead"><%= error %></p>
+                <a href="/" class="btn btn-primary mt-3">Go Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

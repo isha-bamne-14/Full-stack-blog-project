@@ -1,0 +1,38 @@
+<%- include('partials/header', { title: 'Posts', user: user }) %>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">All Posts</h1>
+    <div class="row">
+        <% if (posts.length === 0) { %>
+        <div class="col-md-12">
+            <div class="alert alert-info text-center" role="alert">
+                No posts found.
+            </div>
+        </div>
+        <% } %>
+        <% posts.forEach(post => { %>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <!-- Display images if available -->
+                <% if (post.images && post.images.length > 0) { %>
+                <img src="<%= post.images[0].url %>" class="card-img-top" style="max-height: 300px; object-fit: cover;" alt="Post Image">
+                <% } else { %>
+                <img src="https://via.placeholder.com/400x200?text=No+Image" class="card-img-top" alt="Placeholder">
+                <% } %>
+                
+                <div class="card-body">
+                    <h5 class="card-title"><%= post.title %></h5>
+                    <p class="card-text"><%= post.content.substring(0, 100) %>...</p>
+                    <a href="/posts/<%= post._id %>" class="btn btn-primary btn-sm">Read More</a>
+                </div>
+                
+                <div class="card-footer">
+                    <small class="text-muted">Posted by <%= post.author.username || 'Anonymous' %> on <%= new Date(post.createdAt).toLocaleDateString() %></small>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,42 @@
+<%- include('partials/header', { title: title, user: user }) %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="mb-4">Edit Post</h1>
+        <form action="/posts/<%= post._id %>/edit?_method=PUT" method="POST" enctype="multipart/form-data" class="border p-4 rounded shadow">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="title" id="title" class="form-control" value="<%= post.title %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea name="content" id="content" rows="5" class="form-control" required><%= post.content %></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Current Images</label>
+                <div class="d-flex flex-wrap gap-3">
+                    <% post?.images?.forEach((img) => { %>
+                        <img src="<%= img.url %>" alt="Image" class="img-thumbnail" style="max-width: 150px; height: auto;">
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="images" class="form-label">Add New Images</label>
+                <input type="file" name="images" id="images" class="form-control" multiple accept="image/*">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+<%- include('partials/footer') %>
